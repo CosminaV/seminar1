@@ -44,4 +44,6 @@ function extrage_nr_pare(array,...args){
 }
 
 let array3=[];
-console.log(extrage_nr_pare(array3,2, 5, 6, 7));
+//console.log(extrage_nr_pare(array3,2, 5, 6, 7));
+array3=extrage_nr_pare(array3,2, 5, 6, 7);
+console.log(array3);

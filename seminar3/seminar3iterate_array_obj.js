@@ -25,7 +25,7 @@ output:
 }*/
 
 function word_count(string){
-    let string_array=string.split(" ");
+    let string_array=string.split(" "); // 0 - the , 1 - quick 
     let fr=[];
     for(var word of string_array){
         if(fr[word]==undefined){
@@ -38,7 +38,16 @@ function word_count(string){
     return fr;
 }
 
-string="the quick brown fox jumps over the lazy dog";
+let string="the quick brown fox jumps over the lazy dog";
 //console.log(word_count(string))
 let fr=word_count(string);
 console.log(fr);
+
+//3 == 3 true
+//3 === 3 true
+//3 == "3" true ("3" == "3")
+//3 === "3" false
+//0 == false - true
+//0 === false - false
+//null == undefined true
+//null === undefined false
