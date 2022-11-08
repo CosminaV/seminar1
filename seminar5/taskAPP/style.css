@@ -1,0 +1,91 @@
+body{
+    display:flex;
+    flex-direction:column;
+    height:94vh;
+    margin:16px;
+    font-family:sans-serif;
+}
+
+.header{
+    width: 100%;
+    height: 10%;
+    background-color: darkmagenta;
+}
+
+.content{
+    height: 80%;
+    width: 100%;
+    display:flex;
+    
+}
+
+.content > .content-sidebar{
+    display: flex;
+    flex-direction: column;
+    width:15%;
+    background-color:blanchedalmond;
+    padding: 12px;
+}
+
+.content-sidebar a{
+    display: block;
+    padding: 6px;
+    color: purple;
+    font-size:20px;
+    text-decoration: none;
+}
+
+.content-sidebar a:hover{
+    color:black;
+    background-color: whitesmoke;
+}
+
+.content > .content-pane{
+    width: 85%;
+    padding: 10px;
+    background-color: lightblue;
+}
+
+#taskTable{
+    font-size: 10px;
+}
+
+#taskTable td,th{
+    text-align:center;
+    padding:10px;
+}
+
+#taskTable > tbody > tr:last-child{
+    background-color: plum;
+}
+
+.footer{
+    width: 100%;
+    height: 10%;
+    background-color: darkmagenta;
+}
+
+@media screen and (max-width: 290px){
+    .content>.content-sidebar{
+        display: none;
+    }
+
+    .content>.content-pane{
+        width:100%;
+    }
+}
+
+@media screen and (max-width: 230px){
+    body{
+        font-size:10px;
+    }
+    form{
+        display: none;
+    }
+    #taskTable{
+        font-size:10px;
+    }
+    #taskTable th,td{
+        padding: 5px;
+    }
+}

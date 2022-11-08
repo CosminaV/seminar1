@@ -30,12 +30,20 @@ async function loadTable(){
     }
 
     let myHTMLCode = [];
-    myHTMLCode.push("<table id='taskTable'");
+    myHTMLCode.push("<table id='taskTable'>");
     myHTMLCode.push("<thead>")
     myHTMLCode.push("<tr> <th> Task </th> <th> isDone </th> </tr>");
     myHTMLCode.push("</thead>")
     myHTMLCode.push("<tbody>")
     
+    for(let item of data){
+        myHTMLCode.push("<tr> <td>"+item.title+"</td><td><input type='checkbox' value='"+item.title+"'");
+        if(item.isDone){
+            myHTMLCode.push("checked");
+        }
+        myHTMLCode.push("></td></tr>");
+    }
+
     for(var item of data){
         myHTMLCode.push("<tr> <td> "+ item.title + "</td> <td> " + item.isDone + "</td> </tr>")
     }
@@ -47,3 +55,25 @@ async function loadTable(){
 }
 
 loadTable();
+
+let about = document.getElementById("menuAbout");
+let tasks = document.getElementById("menuTasks");
+let contact = document.getElementById("menuContact");
+
+about.onclick = function() {
+    document.getElementById("about").style.display = "block";
+    document.getElementById("tasks").style.display = "none";
+    document.getElementById("contact").style.display = "none";
+}
+
+tasks.onclick = function() {
+    document.getElementById("about").style.display = "none";
+    document.getElementById("tasks").style.display = "block";
+    document.getElementById("contact").style.display = "none";
+}
+
+contact.onclick = function() {
+    document.getElementById("about").style.display = "none";
+    document.getElementById("tasks").style.display = "none";
+    document.getElementById("contact").style.display = "block";
+}

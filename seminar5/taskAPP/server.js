@@ -1,14 +1,14 @@
-let express = require('express')
-let bodyParser = require('body-parser')
-let cors = require('cors')
+let express = require('express');
+let bodyParser = require('body-parser');
+let cors = require('cors');
 
-let app = express()
-let router = express.Router()
+let app = express();
+let router = express.Router();
 
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(bodyParser.json())
-app.use(cors())
-app.use('/api', router)
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+app.use(cors());
+app.use('/api', router);
 
 const array = [
     {
@@ -23,7 +23,7 @@ const array = [
     {
         title:"tema4", isDone:false
     }
-]
+];
 
 //ruta pt get
 router.route('/getTasks').get((req,res) => {
@@ -38,7 +38,7 @@ router.route('/addTask').post((req,res)=>{
     res.json(task);
 });
 
-let port = 8080
-app.listen(port)
+let port = 8080;
+app.listen(port);
 
 console.log("Server is running on http://localhost:"+port)
