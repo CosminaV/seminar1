@@ -21,6 +21,46 @@ async function addTask(){
     await loadTable()
 }
 
+async function loadTable2(){
+    let data = await get(url + "/getTasks");
+    let tableDiv = document.getElementById("tableData");
+    if(!data || !tableDiv){
+        return
+    }
+    let table = document.createElement("table");
+    tableDiv.append(table);
+    table.id="taskTable";
+
+    let thead = document.createElement("thead");
+    table.append(thead);
+    let headRow = document.createElement("tr");
+    thead.append(headRow);
+    const addHeadRowTh = (text) => {
+        const cel = document.createElement("th");
+        cel.innerText=text;
+        headRow.append(cel);
+    }
+    addHeadRowTh("Task");
+    addHeadRowTh("isDone");
+
+    let tbody = document.createElement("tbody");
+    table.append(tbody);
+    for(let item of data){
+        const rand = document.createElement("tr");
+        tbody.append(rand);
+        const cel = document.createElement("td");
+        cel.innerText=item.title;
+        rand.append(cel);
+        let input = document.createElement("input");
+        input.type="checkbox";
+        input.value=item.title;
+        if(item.isDone){
+            input.checked=true;
+        }
+        rand.append(input);
+    }
+}
+
 async function loadTable(){
     let data = await get(url + "/getTasks");
 
@@ -55,6 +95,7 @@ async function loadTable(){
 }
 
 loadTable();
+//loadTable2();
 
 let about = document.getElementById("menuAbout");
 let tasks = document.getElementById("menuTasks");
