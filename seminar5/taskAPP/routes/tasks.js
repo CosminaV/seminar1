@@ -1,12 +1,6 @@
 let express = require('express');
 let router = express.Router();
-const Task = require("../Task");
-
-//cand vom avea baza de dat nu va mai fi aici
-const tasks = [ new Task(1, "tema1", true),
-new Task(2, "tema2", false),
-new Task(3, "tema3", false),
-new Task(4, "tema4", false)];
+const Task = require("../models/task"); // este data calea fisierului 
 
 const checkID = (req, res, next)=>{
     //daca exista id si este scris gresit
@@ -18,57 +12,79 @@ const checkID = (req, res, next)=>{
     }
 }
 
-router.route('/getTask/:id').get(checkID, (req,res)=>{
+router.route('/getTask/:id').get(checkID, async (req,res)=>{
     //iau task ul respectiv cu id-ul dat ca parametru
-    const task = tasks.find(task => task.id == req.params.id)
-    if(task){
-        //si afisez task ul
-        res.status(200).json(task)
+    try{
+        const task = await Task.findByPk(req.params.id);
+        if(task){
+            //si afisez task ul
+            res.status(200).json(task)
+        }
+        else{
+            res.status(404).json({error: `Task with id ${req.params.id} not found`});
+        }
     }
-    else{
-        res.status(400).json({error: "task not found!"})
+    catch{
+        res.status(500).json(error);
     }
 })
 
 //ruta pt get
-router.route('/getTasks').get((req,res) => {
-    let filteredTasks = [];
-    //cautam daca dupa ? avem vreo valoare pt isDone
-    if(req.query.isDone){
-        //trb transformat in string
-        filteredTasks = tasks.filter(task => (task.isDone).toString().toLowerCase() == req.query.isDone);
+router.route('/getTasks').get(async (req,res) => {
+    try{
+        const tasks = await Task.findAll();
+        res.status(200).json(tasks);
     }
-    else{
-        filteredTasks=tasks;
+    catch (error){
+        res.status(500).json(error);
     }
-    res.json(filteredTasks);
 });
 
 //ruta pt add
-router.route('/addTask').post((req,res)=>{
-    let task= new Task(req.body.id, req.body.title, req.body.isDone);
-    tasks.push(task);
-    //afisez doar task-ul pe care il adaug
-    res.json(task);
+router.route('/addTask').post(async (req,res)=>{
+    try{
+        const newTask = await Task.create(req.body);
+        res.status(200).json(newTask);
+    }
+    catch (error){
+        res.status(500).json(error);
+    }
 });
 
 //update
-router.route('/modifyTask/:id').put((req,res) => {
-    let task = tasks.find(task => task.id == req.params.id);
-
-    task.title = req.body.title;
-    task.isDone = req.body.isDone;
-
-    //afisez task ul cu valorile actualizate
-    res.json(task);
+router.route('/modifyTask/:id').put(async (req,res) => {
+    try{
+        const task = await Task.findByPk(req.params.id);
+        if(task){
+            const updatedTask = await task.update(req.body);
+            res.status(200).json(updatedTask);
+        }
+        else{
+            res.status(404).json({error: `Task with id ${req.params.id} not found`});
+        }
+    }
+    catch(error){
+        res.status(500).json(error);
+    }
 })
 
 router.route('/deleteTask/:id').delete((req,res) => {
-    let index = tasks.findIndex(task => task.id == req.params.id);
-
-    tasks.splice(index, 1);
-
-    res.json(tasks);
+    try{
+        Task.destroy({
+            where: {id: req.params.id} 
+        })
+        .then((rows) => {
+            if (rows === 1){
+                res.status(400).json({status: "task was deleted"});
+            }
+            else{
+                res.status(400).json({status: "task was not found"});
+            }
+        })
+    }
+    catch(error){
+        res.status(500).json(error);
+    }
 })
 
 module.exports = router;
